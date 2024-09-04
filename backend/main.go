@@ -1,7 +1,12 @@
 package backend
 
-import "fmt"
+import (
+	"backend/controllers"
+
+	"github.com/gorilla/mux"
+)
 
 func main() {
-	fmt.Println("Hello World!")
+	r := mux.NewRouter()
+	r.HandleFunc("api/v1/health", controllers.HealthCheck).Methods("GET")
 }
