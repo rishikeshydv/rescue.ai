@@ -6,13 +6,16 @@ import (
 
 type SignupUser struct {
 	gorm.Model
-	Email    string `gorm:"unique" json:"email" bson:"email"`
-	Phone    string `gorm:"unique" json:"phone" bson:"phone"`
-	Name     string `json:"name" bson:"name"`
-	Password string `json:"password" bson:"password"`
+	Phone         string `gorm:"unique" json:"phone" bson:"phone"`
+	Name          string `json:"name" bson:"name"`
+	Password      string `json:"password" bson:"password"`
+	Address       string `json:"address" bson:"address"`
+	DriverLicense string `json:"driverLincense" bson:"driverLicense"`
+	FaceCapture   string `json:"faceCapture" bson:"faceCapture"`
 }
 
 type LoginUser struct {
-	Email    string `json:"email" bson:"email"`
-	Password string `json:"password" bson:"password"`
+	Phone       string `json:"phone" bson:"phone"`
+	Password    string `json:"password" bson:"password"`
+	FaceCapture string `json:"faceCapture" bson:"faceCapture"`
 }
