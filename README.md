@@ -5,9 +5,9 @@ Rescue.ai is an advanced AI-driven emergency response platform designed to assis
 ## Features
 
 ### 1. Authentication & Authorization
-- ✅ **Multi-Factor Authentication (MFA)**: Secure authentication using Phone, Password, Driver's License, Face Capture, and Full Address. "Important"
+✅ **Multi-Factor Authentication (MFA)**: Secure authentication using Phone, Password, Driver's License, Face Capture, and Full Address. "Important"
 - [ ] **Blockchain Verification**: Ensures the integrity and security of user identity data through blockchain technology. "Not Important"
-- ✅ **Geofencing**: Verifies the user’s location to authenticate emergency requests within the service area. "Important"
+✅ **Geofencing**: Verifies the user’s location to authenticate emergency requests within the service area. "Important"
 
 ### 2. Handling Multiple Call Requests
 - [ ] **Apache Kafka Integration**: Efficiently handles multiple incoming emergency calls using Apache Kafka for high-throughput messaging. "Not Important"
