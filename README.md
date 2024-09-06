@@ -6,7 +6,6 @@ Rescue.ai is an advanced AI-driven emergency response platform designed to assis
 
 ### 1. Authentication & Authorization
 - [ ] **Multi-Factor Authentication (MFA)**: Secure authentication using Phone, Password, Driver's License, Face Capture, and Full Address.
-- [ ] **Biometric Security**: Incorporates facial recognition and optional fingerprint or voice recognition for enhanced security.
 - [ ] **Blockchain Verification**: Ensures the integrity and security of user identity data through blockchain technology.
 - [ ] **Geofencing**: Verifies the user’s location to authenticate emergency requests within the service area.
 
