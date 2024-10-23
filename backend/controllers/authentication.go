@@ -57,5 +57,32 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	//save to the database
 	db.Create(&user)
 	log.Println("User created successfully")
+}
 
+func Login(w http.ResponseWriter, r *http.Request) {
+	var loginUser models.LoginUser
+	var dbUser models.LoginUser
+	err := json.NewDecoder(r.Body).Decode(&loginUser)
+	if err != nil {
+		log.Fatal(err)
+	}
+	//retrieve from the database if such a user exist
+	db := postgres.DBConnect()
+	tx := db.First(&loginUser, "phone=?", loginUser.Phone)
+	if tx.RowsAffected == 0 {
+		log.Fatal("No such users exist")
+		return
+	} else {
+		//scan the database transaction into the dbUser
+		tx.Scan(&dbUser)
+		//check if the phone and password of the loginUser matches the one in the database transaction
+		if loginUser.Phone == dbUser.Phone && loginUser.Password != dbUser.Password {
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		} else {
+			tokenString := CreateToken(loginUser.Phone)
+			log.Println(tokenString)
+			w.WriteHeader(http.StatusOK)
+		}
+	}
 }
