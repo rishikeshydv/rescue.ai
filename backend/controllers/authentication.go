@@ -31,6 +31,7 @@ func CreateToken(username string) string {
 func Signup(w http.ResponseWriter, r *http.Request) {
 	//connect to the database
 	db := postgres.DBConnect()
+	db.AutoMigrate(models.SignupUser{})
 	var user models.SignupUser
 	// Decode the incoming SignupUser json
 	err := json.NewDecoder(r.Body).Decode(&user)
@@ -81,7 +82,14 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			return
 		} else {
 			tokenString := CreateToken(loginUser.Phone)
-			log.Println(tokenString)
+			//create a cookie to be passed
+			cookie := http.Cookie{
+				Name:     "token",
+				Value:    tokenString,
+				Expires:  time.Now().Add(time.Hour * 24),
+				HttpOnly: true,
+			}
+			http.SetCookie(w, &cookie)
 			w.WriteHeader(http.StatusOK)
 		}
 	}
