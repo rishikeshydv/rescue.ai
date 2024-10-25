@@ -45,19 +45,25 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	//check if the user already exists
 	tx := db.First(&user, "phone=?", user.Phone)
 	if tx.RowsAffected > 0 {
-		log.Println("User already exists")
+		json.NewEncoder(w).Encode(map[string]string{"status": "user already exists"})
 		return
 	}
 
 	//check if password and confirm password match
 	if user.Password != user.ConfirmPassword {
-		log.Println("Password and Confirm Password do not match")
+		json.NewEncoder(w).Encode(map[string]string{"status": "passwords do not match"})
 		return
 	}
 
 	//save to the database
-	db.Create(&user)
-	log.Println("User created successfully")
+	tx = db.Create(&user)
+	if tx.Error != nil {
+		log.Fatal(tx.Error)
+		return
+	} else {
+		json.NewEncoder(w).Encode(map[string]string{"status": "user created"})
+	}
+
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
@@ -69,9 +75,10 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 	//retrieve from the database if such a user exist
 	db := postgres.DBConnect()
-	tx := db.First(&loginUser, "phone=?", loginUser.Phone)
+	tx := db.Table("signup_users").First(&loginUser, "phone=?", loginUser.Phone)
+	log.Println(tx.RowsAffected)
 	if tx.RowsAffected == 0 {
-		log.Fatal("No such users exist")
+		json.NewEncoder(w).Encode(map[string]string{"status": "user does not exist"})
 		return
 	} else {
 		//scan the database transaction into the dbUser
@@ -79,6 +86,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		//check if the phone and password of the loginUser matches the one in the database transaction
 		if loginUser.Phone == dbUser.Phone && loginUser.Password != dbUser.Password {
 			w.WriteHeader(http.StatusUnauthorized)
+			json.NewEncoder(w).Encode(map[string]string{"status": "incorrect password"})
 			return
 		} else {
 			tokenString := CreateToken(loginUser.Phone)
@@ -91,6 +99,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			}
 			http.SetCookie(w, &cookie)
 			w.WriteHeader(http.StatusOK)
+			json.NewEncoder(w).Encode(map[string]string{"status": "login successful"})
 		}
 	}
 }
