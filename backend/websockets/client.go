@@ -1,6 +1,7 @@
 package websockets
 
 import (
+	"backend/models"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -43,6 +44,14 @@ func (c *Client) ClientMessage() {
 			break
 		}
 		c.hub.broadcast <- msg
+		AddPoliceMessages(
+			&models.Message{
+				MessageDepartment: "Police",
+				MessageType:       "Sent",
+				DeliveredTime:     time.Now(),
+				MessageContent:    string(msg),
+				SenderUser:        c.conn.RemoteAddr().String()})
+
 	}
 }
 
@@ -68,6 +77,13 @@ func (c *Client) ServerMessage() {
 				return
 			}
 			writer.Write(message)
+			AddPoliceMessages(
+				&models.Message{
+					MessageDepartment: "Police",
+					MessageType:       "Received",
+					DeliveredTime:     time.Now(),
+					MessageContent:    string(message),
+					SenderUser:        c.conn.RemoteAddr().String()})
 
 			//handling messages in the queue
 			totalMessages := len(c.send)
@@ -97,7 +113,7 @@ func ServerWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 		hub:  hub,
 	}
 	newClient.hub.register <- newClient
-
+	json.NewEncoder(w).Encode(map[string]string{"Status": "Client Successfully Assigned a Websocket"})
 	go newClient.ClientMessage()
 	go newClient.ServerMessage()
 }

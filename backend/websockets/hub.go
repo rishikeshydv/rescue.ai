@@ -1,5 +1,7 @@
 package websockets
 
+import "log"
+
 type Hub struct {
 	clients map[*Client]bool
 
@@ -23,6 +25,7 @@ func NewHub() *Hub {
 }
 
 func (h *Hub) Run() {
+	log.Println("Hub Running Successfully")
 	for {
 		select {
 		case client := <-h.register:

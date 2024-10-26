@@ -52,7 +52,11 @@ func main() {
 	go newHub.Run()
 	r.HandleFunc("/api/v1/createWS", func(w http.ResponseWriter, r *http.Request) {
 		websockets.ServerWs(newHub, w, r)
-	})
+	}).Methods("GET")
+
+	//storing messages
+	r.HandleFunc("/api/v1/createPoliceMessageTable", websockets.CreatePoliceTable).Methods("GET")
+
 	log.Println("Server Running on port 5001")
 	log.Fatal(http.ListenAndServe(":5001", r))
 	// log.Fatal(http.ListenAndServe(":5001", handlers.CORS(credentials,origins)(r)))
