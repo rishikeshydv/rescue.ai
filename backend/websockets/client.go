@@ -26,7 +26,7 @@ type Client struct {
 }
 
 // reading messages from client
-func (c *Client) ReadPump() {
+func (c *Client) ClientMessage() {
 	defer func() {
 		c.hub.unregister <- c
 		c.conn.Close()
@@ -46,40 +46,41 @@ func (c *Client) ReadPump() {
 	}
 }
 
-func (c *Client) WritePump() {
+// when one user sends a message, it goes to the server only
+// so its the server's job to send that message to all the other users
+// thats what 'WritePump' do
+func (c *Client) ServerMessage() {
 	ticker := time.NewTicker(pingTime)
 	defer func() {
-		ticker.Stop()
 		c.conn.Close()
+		ticker.Stop()
 	}()
 	for {
 		select {
 		case message, ok := <-c.send:
-			c.conn.SetWriteDeadline(time.Now().Add(writingWaitTime))
 			if !ok {
-				// The hub closed the channel.
 				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
-
-			w, err := c.conn.NextWriter(websocket.TextMessage)
+			c.conn.SetWriteDeadline(time.Now().Add(writingWaitTime))
+			writer, err := c.conn.NextWriter(websocket.TextMessage)
 			if err != nil {
 				return
 			}
-			w.Write(message)
+			writer.Write(message)
 
-			// Add queued chat messages to the current websocket message.
-			n := len(c.send)
-			for i := 0; i < n; i++ {
-				w.Write(<-c.send)
+			//handling messages in the queue
+			totalMessages := len(c.send)
+			for i := 0; i < totalMessages; i++ {
+				writer.Write([]byte{'\n'}) //this is for a new line
+				writer.Write(<-c.send)
 			}
 
-			if err := w.Close(); err != nil {
-				return
-			}
+			//sending a ping at every ping interval
 		case <-ticker.C:
 			c.conn.SetWriteDeadline(time.Now().Add(writingWaitTime))
-			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
+			err := c.conn.WriteMessage(websocket.PingMessage, nil)
+			if err != nil {
 				return
 			}
 		}
@@ -97,6 +98,6 @@ func ServerWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	}
 	newClient.hub.register <- newClient
 
-	go newClient.WritePump()
-	go newClient.ReadPump()
+	go newClient.ClientMessage()
+	go newClient.ServerMessage()
 }

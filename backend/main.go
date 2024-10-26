@@ -4,6 +4,7 @@ import (
 	"backend/auth"
 	"backend/controllers"
 	"backend/tickets"
+	"backend/websockets"
 	"log"
 	"net/http"
 
@@ -37,12 +38,21 @@ func main() {
 	r.HandleFunc("/api/v1/createAmbulanceTicket", tickets.CreateAmbulanceTicket).Methods("POST")
 	r.HandleFunc("/api/v1/createFireTicket", tickets.CreateFireTicket).Methods("POST")
 	//add the ticket updates
-	r.HandleFunc("api/v1/ticketUpdate",tickets.CreateUpdateTicket).Methods("POST")
+	r.HandleFunc("api/v1/ticketUpdate", tickets.CreateUpdateTicket).Methods("POST")
 
 	//get all the tickets
-	
+	r.HandleFunc("/api/v1/getPoliceTickets", tickets.GetPoliceTickets).Methods("GET")
+	r.HandleFunc("/api/v1/getAmbulanceTickets", tickets.GetAmbulanceTickets).Methods("GET")
+	r.HandleFunc("/api/v1/getFireTickets", tickets.GetFireTickets).Methods("GET")
+	//get the ticket updates
+	r.HandleFunc("/api/v1/getTicketUpdates", tickets.GetTicketUpdates).Methods("GET")
 
-
+	//handling websockets
+	newHub := websockets.NewHub()
+	go newHub.Run()
+	r.HandleFunc("/api/v1/createWS", func(w http.ResponseWriter, r *http.Request) {
+		websockets.ServerWs(newHub, w, r)
+	})
 	log.Println("Server Running on port 5001")
 	log.Fatal(http.ListenAndServe(":5001", r))
 	// log.Fatal(http.ListenAndServe(":5001", handlers.CORS(credentials,origins)(r)))
