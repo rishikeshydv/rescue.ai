@@ -1,6 +1,8 @@
 package websockets
 
 import (
+	"encoding/json"
+	"net/http"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -24,7 +26,7 @@ type Client struct {
 }
 
 // reading messages from client
-func (c *Client) readPump() {
+func (c *Client) ReadPump() {
 	defer func() {
 		c.hub.unregister <- c
 		c.conn.Close()
@@ -42,4 +44,30 @@ func (c *Client) readPump() {
 		}
 		c.hub.broadcast <- msg
 	}
+}
+
+func (c *Client) WritePump() {
+	ticker := time.NewTicker(pingTime)
+	defer func() {
+		ticker.Stop()
+		c.conn.Close()
+	}()
+	for {
+
+	}
+}
+func ServerWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+	}
+	newClient := &Client{
+		conn: conn,
+		send: make(chan []byte),
+		hub:  hub,
+	}
+	newClient.hub.register <- newClient
+
+	go newClient.WritePump()
+	go newClient.ReadPump()
 }
