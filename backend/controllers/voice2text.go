@@ -3,10 +3,13 @@ package controllers
 import (
 	"log"
 
-	openai "github.com/sashabaranov/go-openai"
+	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/option"
 )
 
 func Voice2Text() {
-	client := openai.NewClient("sk-1234567890abcdef1234567890abcdef")
+	client := openai.NewClient(
+		option.WithAPIKey(""),
+	)
 	log.Println(client)
 }

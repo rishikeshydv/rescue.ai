@@ -16,15 +16,13 @@ Rescue.ai is an advanced AI-driven emergency response platform designed to assis
 - [ ] **Event-Driven Architecture**: Employs an event-driven microservices architecture for scalable and responsive operations. "Not Important"
 
 ### 3. Voice-to-Text Generator
-- [ ] **Real-Time Processing**: Converts voice to text in real-time and processes it through a custom Transformer Model to generate structured responses. "Important"
-- [ ] **Contextual Awareness**: Adapts responses based on the context of the emergency, improving communication accuracy. "Not Important"
-- [ ] **Emotion Detection**: Analyzes the caller's tone and speech patterns to detect emotions and categorize the level of urgency. "Not Important"
-- [ ] **Multi-Language Support**: Supports multiple languages and dialects to ensure accessibility for a diverse user base. "Not Important"
+- [x] **Real-Time Processing**: Converts voice to text in real-time and processes it through a custom Transformer Model to generate structured responses. "Important"
+- [x] **Contextual Awareness**: Adapts responses based on the context of the emergency, improving communication accuracy. "Important"
+- [x] **Emotion Detection**: Analyzes the caller's tone and speech patterns to detect emotions and categorize the level of urgency. "Important"
+- [x] **Multi-Language Support**: Supports multiple languages and dialects to ensure accessibility for a diverse user base. "Important"
 
 ### 4. Human-Like AI Interaction
-- [ ] **Natural Communication**: The AI Agent interacts with users in a natural and empathetic manner, mimicking human conversation. "Important"
-- [ ] **Tone Analysis**: Assesses the caller's tone and adjusts responses to calm distressed individuals. "Not Important"
-- [ ] **Adaptive Interaction**: Modifies communication style based on the detected emotional state of the user. "Not Important"
+- [x] **Natural Communication**: The AI Agent interacts with users in a natural and empathetic manner, mimicking human conversation. "Important"
 - [ ] **Empathy Simulation**: Trains the AI to exhibit empathy, improving user experience during high-stress situations. "Not Important"
 
 ### 5. Load Handler
