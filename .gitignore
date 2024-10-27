@@ -25,6 +25,6 @@ go.work.sum
 .env
 
 # Air configuration file
-.air.toml
+backend/.air.toml
 #tmp folder
-tmp/
+backend/tmp
