@@ -34,6 +34,6 @@ Rescue.ai is an advanced AI-driven emergency response platform designed to assis
 - [ ] **Seamless Handoff**: Transfers sessions between bots without disrupting user interaction. "Not Important"
 
 ### 6. Ticket Dispatch System
-- [ ] **Automated Routing**: Automatically routes tickets to the appropriate team (Police, Fire Department, Ambulance) based on urgency and resource availability. "Important"
-- [ ] **Cross-Agency Collaboration**: Enables real-time communication and updates between emergency response teams for coordinated efforts. "Important"
-- [ ] **Incident Management Dashboard**: Centralizes ticket information, status updates, and resource allocation for a comprehensive view of ongoing emergencies. "Important"
+- [x] **Automated Routing**: Automatically routes tickets to the appropriate team (Police, Fire Department, Ambulance) based on urgency and resource availability. "Important"
+- [x] **Cross-Agency Collaboration**: Enables real-time communication and updates between emergency response teams for coordinated efforts. "Important"
+- [x] **Incident Management Dashboard**: Centralizes ticket information, status updates, and resource allocation for a comprehensive view of ongoing emergencies. "Important"
