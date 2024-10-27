@@ -57,6 +57,9 @@ func main() {
 	//storing messages
 	r.HandleFunc("/api/v1/createPoliceMessageTable", websockets.CreatePoliceTable).Methods("GET")
 
+	//retrievingmessages
+	r.HandleFunc("/api/v1/getPoliceMessages", websockets.RetrievePoliceMessages).Methods("GET")
+
 	log.Println("Server Running on port 5001")
 	log.Fatal(http.ListenAndServe(":5001", r))
 	// log.Fatal(http.ListenAndServe(":5001", handlers.CORS(credentials,origins)(r)))
