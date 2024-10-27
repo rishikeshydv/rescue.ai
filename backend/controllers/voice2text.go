@@ -12,4 +12,5 @@ func Voice2Text() {
 		option.WithAPIKey(""),
 	)
 	log.Println(client)
+	log.Println("Voice2Text")
 }
