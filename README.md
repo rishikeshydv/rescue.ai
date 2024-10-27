@@ -35,3 +35,10 @@ Rescue.ai is an advanced AI-driven emergency response platform designed to assis
 - [x] **Automated Routing**: Automatically routes tickets to the appropriate team (Police, Fire Department, Ambulance) based on urgency and resource availability. "Important"
 - [x] **Cross-Agency Collaboration**: Enables real-time communication and updates between emergency response teams for coordinated efforts. "Important"
 - [x] **Incident Management Dashboard**: Centralizes ticket information, status updates, and resource allocation for a comprehensive view of ongoing emergencies. "Important"
+
+# Real-Time Voice Interaction Workflow
+
+1. User asks a question via phone → Audio is streamed to the ASR in real-time.
+2. Speech is transcribed and sent to the generative AI model.
+3. AI model generates a response, and the text is immediately sent to the TTS engine.
+4. TTS generates the audio, which is streamed back to the caller.
